@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { FiSearch, FiMapPin, FiStar } from 'react-icons/fi';
 import { BsBuildings, BsBriefcase, BsPersonBoundingBox } from 'react-icons/bs';
-import { StatCard } from '@/utils/types/homePage';
+import { StatCard } from '@/utils/types/homePageTypes';
 
 export default function HeroSection() {
   const stats: StatCard[] = [
