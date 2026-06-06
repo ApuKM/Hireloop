@@ -10,7 +10,7 @@ export interface SignUpFormData {
   username: string;
   email: string;
   password: string;
-  imageUrl: string;
+  imageUrl?: string;
 }
 
 export interface LoginFormInputs {

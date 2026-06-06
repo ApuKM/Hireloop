@@ -14,8 +14,11 @@ import {
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { LoginFormInputs } from "@/utils/types/homePageTypes";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+    const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -27,8 +30,23 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("React Hook Form successfully extracted:", data);
+      //   await new Promise((resolve) => setTimeout(resolve, 2000));
+      //   console.log("React Hook Form successfully extracted:", data);
+      const { data: authData, error: authError } =
+        await authClient.signIn.email({
+          email: data.email,
+          password: data.password,
+          callbackURL: "/",
+        });
+      if (authError) {
+        setError("root", {
+          message:
+            authError.message || "Failed to create account. Please try again.",
+        });
+        return;
+      }
+      console.log("Login succesful:", data);
+      router.push("/")
     } catch (err) {
       setError("root", { message: "Network error. Please try again later." });
     }
@@ -38,10 +56,9 @@ export default function LoginForm() {
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 relative font-sans overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#5a45ff]/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-[#5a45ff]/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="dark relative w-full max-w-md bg-[#0a0a0a]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 shadow-2xl z-10">
-        
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold tracking-tight mb-2 text-white">
             Welcome back
@@ -68,15 +85,17 @@ export default function LoginForm() {
           <Separator className="flex-1 bg-white/10" />
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex w-full flex-col gap-4">
-          
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          className="flex w-full flex-col gap-4"
+        >
           {/* Email Field - Removed HeroUI's isRequired */}
-          <TextField
-            fullWidth
-            isInvalid={!!errors.email}
-          >
+          <TextField fullWidth isInvalid={!!errors.email}>
             {/* Added manual asterisk if you want to keep the visual indicator */}
-            <Label>Email <span className="text-red-500">*</span></Label>
+            <Label>
+              Email <span className="text-red-500">*</span>
+            </Label>
             <Input
               type="email"
               placeholder="user@example.com"
@@ -96,11 +115,10 @@ export default function LoginForm() {
           </TextField>
 
           {/* Password Field - Removed HeroUI's isRequired */}
-          <TextField
-            fullWidth
-            isInvalid={!!errors.password}
-          >
-            <Label>Password <span className="text-red-500">*</span></Label>
+          <TextField fullWidth isInvalid={!!errors.password}>
+            <Label>
+              Password <span className="text-red-500">*</span>
+            </Label>
             <div className="relative flex w-full items-center">
               <Input
                 type={showPassword ? "text" : "password"}
@@ -116,7 +134,11 @@ export default function LoginForm() {
                 className="absolute right-3 focus:outline-none text-gray-400 hover:text-gray-200 transition-colors"
                 aria-label="Toggle password visibility"
               >
-                {showPassword ? <FiEyeOff className="text-lg" /> : <FiEye className="text-lg" />}
+                {showPassword ? (
+                  <FiEyeOff className="text-lg" />
+                ) : (
+                  <FiEye className="text-lg" />
+                )}
               </button>
             </div>
             {errors.password && (
@@ -128,12 +150,15 @@ export default function LoginForm() {
 
           {errors.root && (
             <p className="text-red-500 text-sm text-center bg-red-500/10 py-2 rounded-lg mt-2">
-              {errors.root.message}
+              {errors?.root?.message}
             </p>
           )}
 
           <div className="flex justify-end w-full">
-            <Link href="/auth/reset-password" className="text-xs text-gray-400 hover:text-white transition-colors">
+            <Link
+              href="/auth/reset-password"
+              className="text-xs text-gray-400 hover:text-white transition-colors"
+            >
               Forgot password?
             </Link>
           </div>

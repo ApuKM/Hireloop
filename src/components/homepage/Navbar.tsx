@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 // -----------------------------------------------------------
 // HireLoop Navbar
@@ -42,6 +44,11 @@ const NAV_LINKS: Record<Role, { label: string; href: string }[]> = {
 };
 
 export default function Navbar({ role = "guest" }: NavbarProps) {
+  const {data: session, isPending } = authClient.useSession()
+  const user = session?.user;
+
+  const router = useRouter();
+
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -52,7 +59,18 @@ export default function Navbar({ role = "guest" }: NavbarProps) {
   }, []);
 
   const links = NAV_LINKS[role];
-  const isLoggedIn = role !== "guest";
+  // const isLoggedIn = role !== "guest";
+
+  const handleLogOut = async() => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/")
+        }
+      }
+    })
+  }
+
 
   return (
     <header
@@ -117,21 +135,19 @@ export default function Navbar({ role = "guest" }: NavbarProps) {
 
         {/* ── Desktop Auth Buttons ── */}
         <div className="hidden md:flex items-center gap-2">
-          {isLoggedIn ? (
+          {user ? (
             <>
               {/* Avatar / profile shortcut */}
               <button
-                className="h-9 w-9 rounded-full bg-liners-to-br from-[#F97316] to-[#3B82F6]
-                  flex items-center justify-center text-white text-sm font-bold
-                  ring-2 ring-transparent hover:ring-[#F97316]/50 transition-all duration-200"
-                aria-label="Profile"
+              className="text-xs font-medium mr-4"
               >
-                {role[0].toUpperCase()}
+                Hi, {user?.name?.split(" ")[0]}
               </button>
               <Button
                 variant="danger-soft"
                 className="text-[#b3b3b8] hover:text-white text-sm font-medium"
                 size="sm"
+                onClick={handleLogOut}
               >
                 Sign Out
               </Button>
@@ -193,7 +209,7 @@ export default function Navbar({ role = "guest" }: NavbarProps) {
       <div
         className={[
           "md:hidden overflow-hidden transition-all duration-300 bg-[#0f0f10] border-t border-white/6",
-          menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+          menuOpen ? "max-h-110 opacity-100" : "max-h-0 opacity-0",
         ].join(" ")}
       >
         <ul className="flex flex-col px-4 py-3 gap-1">
@@ -212,14 +228,22 @@ export default function Navbar({ role = "guest" }: NavbarProps) {
         </ul>
 
         <div className="flex flex-col gap-2 px-4 pb-4">
-          {isLoggedIn ? (
+          {user ? (
+            <>
+            <button
+              className="text-xs font-medium mb-4"
+              >
+                Hi, {user?.name?.split(" ")[0]}
+              </button>
             <Button
               variant="danger-soft"
               className="border-white/10 text-[#b3b3b8] w-full"
               size="sm"
+              onClick={handleLogOut}
             >
               Sign Out
             </Button>
+            </>
           ) : (
             <>
             <Link href="/auth/login">

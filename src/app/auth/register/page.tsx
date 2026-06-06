@@ -14,7 +14,8 @@ import {
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { SignUpFormData } from "@/utils/types/homePageTypes";
-
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
   // Centralized Form State
@@ -24,11 +25,12 @@ export default function SignUpForm() {
     password: "",
     imageUrl: "",
   });
+  const router = useRouter();
 
   // Processing & UI States
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [apiError, setApiError] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // --- Real-time Validation Logic ---
   // Using derived state ensures validation is always perfectly in sync with input values.
@@ -41,9 +43,9 @@ export default function SignUpForm() {
     return formData.email.length > 0 && !emailRegex.test(formData.email);
   }, [formData.email]);
 
- const isPasswordInvalid = React.useMemo(() => {
+  const isPasswordInvalid = React.useMemo(() => {
     const password = formData.password;
-    
+
     // Do not show an error if the user hasn't typed anything yet
     if (password.length === 0) return false;
 
@@ -83,15 +85,33 @@ export default function SignUpForm() {
     }
 
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       // Simulating network latency
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log("Form Data successfully processed:", formData);
+      // await new Promise((resolve) => setTimeout(resolve, 2000));
+      // console.log("Form Data successfully processed:", formData);
       // Proceed to routing or success state here
+      const { data, error: authError } = await authClient.signUp.email({
+        name: formData.username,
+        email: formData.email,
+        password: formData.password,
+        image: formData.imageUrl ? formData.imageUrl : undefined,
+      });
+      if (authError) {
+        setApiError(
+          authError.message || "Failed to create account. Please try again.",
+        );
+        return;
+      }
+      console.log("Account successfully created:", data);
+
+      // Redirect to dashboard or login page upon success
+      router.push("/");
     } catch (err) {
-      setApiError("Something went wrong establishing a connection. Please try again.");
+      setApiError(
+        "Something went wrong establishing a connection. Please try again.",
+      );
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -102,7 +122,6 @@ export default function SignUpForm() {
 
       {/* Main Container Card */}
       <div className="dark relative w-full max-w-md bg-[#0a0a0a]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 shadow-2xl z-10">
-        
         {/* Header */}
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold tracking-tight mb-2 text-white">
@@ -134,7 +153,6 @@ export default function SignUpForm() {
 
         {/* Credentials Form */}
         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-4">
-          
           {/* Username Field */}
           <TextField
             isRequired
@@ -183,7 +201,7 @@ export default function SignUpForm() {
           </TextField>
 
           {/* Password Field */}
-        {/* Password Field */}
+          {/* Password Field */}
           <TextField
             isRequired
             fullWidth
@@ -216,7 +234,8 @@ export default function SignUpForm() {
             </div>
             {isPasswordInvalid && (
               <FieldError className="text-red-500 text-xs mt-1">
-                Password must be at least 8 characters long. 1 uppercase, 1 lowercase and special character.
+                Password must be at least 8 characters long. 1 uppercase, 1
+                lowercase and special character.
               </FieldError>
             )}
           </TextField>
@@ -244,7 +263,9 @@ export default function SignUpForm() {
           <Button
             fullWidth
             type="submit"
-            isDisabled={isUsernameInvalid || isEmailInvalid || isPasswordInvalid}
+            isDisabled={
+              isUsernameInvalid || isEmailInvalid || isPasswordInvalid
+            }
             className="bg-[#5a45ff] hover:bg-[#4936e0] font-medium text-white text-sm h-12 rounded-xl shadow-lg shadow-[#5a45ff]/20 transition-all mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Creating Account..." : "Create Account"}

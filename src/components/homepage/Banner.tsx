@@ -1,7 +1,8 @@
-import React from 'react';
+
 import Image from 'next/image';
 import { FiSearch, FiMapPin, FiStar } from 'react-icons/fi';
 import { BsBuildings, BsBriefcase, BsPersonBoundingBox } from 'react-icons/bs';
+import Statistics from "@/components/homepage/Stats"
 import { StatCard } from '@/utils/types/homePageTypes';
 
 export default function HeroSection() {
@@ -128,20 +129,7 @@ export default function HeroSection() {
         </div>
 
         {/* Stats Cards */}
-        <div className="relative z-30 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full px-4 -mt-16 md:-mt-28 lg:-mt-40">
-          {stats.map((stat) => (
-            <div 
-              key={stat.id} 
-              className="bg-[#0a0a0a]/90 backdrop-blur-md border border-white/5 rounded-2xl p-6 flex flex-col gap-8 shadow-xl hover:bg-[#111] transition-colors"
-            >
-              <div>{stat.icon}</div>
-              <div className="flex flex-col gap-1">
-                <span className="text-4xl font-semibold tracking-tight">{stat.value}</span>
-                <span className="text-xs text-gray-400">{stat.label}</span>
-              </div>
-            </div>
-          ))}
-        </div>
+       <Statistics stats={stats}/>
 
       </div>
 
