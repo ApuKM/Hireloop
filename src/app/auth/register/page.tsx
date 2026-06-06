@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   Input,
   Button,
@@ -11,11 +11,14 @@ import {
   FieldError,
   Label,
 } from "@heroui/react";
+import { Radio, RadioGroup } from "@heroui/react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { SignUpFormData } from "@/utils/types/homePageTypes";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+
+type Role = "seeker" | "recruiter";
 
 export default function SignUpForm() {
   // Centralized Form State
@@ -24,6 +27,7 @@ export default function SignUpForm() {
     email: "",
     password: "",
     imageUrl: "",
+    role: "seeker",
   });
   const router = useRouter();
 
@@ -95,7 +99,9 @@ export default function SignUpForm() {
         email: formData.email,
         password: formData.password,
         image: formData.imageUrl ? formData.imageUrl : undefined,
+        role: formData.role,  
       });
+      // console.log(data)
       if (authError) {
         setApiError(
           authError.message || "Failed to create account. Please try again.",
@@ -118,7 +124,7 @@ export default function SignUpForm() {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 relative font-sans overflow-hidden">
       {/* Background glow matching the Hero page theme */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#5a45ff]/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-[#5a45ff]/10 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Main Container Card */}
       <div className="dark relative w-full max-w-md bg-[#0a0a0a]/80 backdrop-blur-md border border-white/5 rounded-2xl p-8 shadow-2xl z-10">
@@ -251,6 +257,41 @@ export default function SignUpForm() {
               onChange={handleChange}
             />
           </TextField>
+
+          {/* Radio */}
+          <div className="flex flex-col gap-4">
+            <Label>What are you?</Label>
+            <RadioGroup
+              defaultValue="seeker"
+              name="role"
+              orientation="horizontal"
+              value={formData.role}
+              onChange={(value) => {
+                setFormData((prev) =>({
+                  ...prev,
+                  role: value as Role,
+                }))
+              }}
+              isRequired
+            >
+              <Radio value="seeker">
+                <Radio.Control>
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Radio.Content>
+                  <Label>Seeker</Label>
+                </Radio.Content>
+              </Radio>
+              <Radio value="recruiter">
+                <Radio.Control>
+                  <Radio.Indicator />
+                </Radio.Control>
+                <Radio.Content>
+                  <Label>Recruiter</Label>
+                </Radio.Content>
+              </Radio>
+            </RadioGroup>
+          </div>
 
           {/* Global Form Error */}
           {apiError && (

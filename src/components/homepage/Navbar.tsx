@@ -15,9 +15,6 @@ import { useRouter } from "next/navigation";
 
 type Role = "guest" | "seeker" | "recruiter" | "admin";
 
-interface NavbarProps {
-  role?: Role;
-}
 
 const NAV_LINKS: Record<Role, { label: string; href: string }[]> = {
   guest: [
@@ -43,9 +40,8 @@ const NAV_LINKS: Record<Role, { label: string; href: string }[]> = {
   ],
 };
 
-export default function Navbar({ role = "guest" }: NavbarProps) {
+export default function Navbar() {
   const {data: session, isPending } = authClient.useSession()
-  const user = session?.user;
 
   const router = useRouter();
 
@@ -58,7 +54,9 @@ export default function Navbar({ role = "guest" }: NavbarProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const links = NAV_LINKS[role];
+  const user = session?.user;
+  const userRole = (user?.role as Role) || "guest"
+  const links = NAV_LINKS[userRole];
   // const isLoggedIn = role !== "guest";
 
   const handleLogOut = async() => {

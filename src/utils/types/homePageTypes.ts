@@ -11,6 +11,7 @@ export interface SignUpFormData {
   email: string;
   password: string;
   imageUrl?: string;
+  role: string;
 }
 
 export interface LoginFormInputs {
