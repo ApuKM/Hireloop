@@ -14,7 +14,7 @@ import {
 import { Radio, RadioGroup } from "@heroui/react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import { SignUpFormData } from "@/utils/types/homePageTypes";
+import { SignUpFormData } from "@/utils/types/HomePageTypes";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 

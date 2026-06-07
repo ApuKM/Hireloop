@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { FiSearch, FiMapPin, FiStar } from 'react-icons/fi';
 import { BsBuildings, BsBriefcase, BsPersonBoundingBox } from 'react-icons/bs';
 import Statistics from "@/components/homepage/Stats"
-import { StatCard } from '@/utils/types/homePageTypes';
+import { StatCard } from '@/utils/types/HomePageTypes';
 
 export default function HeroSection() {
   const stats: StatCard[] = [

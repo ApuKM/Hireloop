@@ -1,6 +1,6 @@
 "use client"
 
-import { StatCard } from '@/utils/types/homePageTypes';
+import { StatCard } from '@/utils/types/HomePageTypes';
 import { motion, Variants } from "motion/react"
 
 // 1. Container variants to stagger the child animations

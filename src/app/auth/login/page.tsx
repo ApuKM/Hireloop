@@ -13,7 +13,7 @@ import {
 } from "@heroui/react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
-import { LoginFormInputs } from "@/utils/types/homePageTypes";
+import { LoginFormInputs } from "@/utils/types/HomePageTypes";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 

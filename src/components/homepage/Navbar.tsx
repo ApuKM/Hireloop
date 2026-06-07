@@ -28,9 +28,9 @@ const NAV_LINKS: Record<Role, { label: string; href: string }[]> = {
     { label: "Saved Jobs", href: "/saved" },
   ],
   recruiter: [
-    { label: "Post a Job", href: "/post-job" },
-    { label: "My Listings", href: "/listings" },
     { label: "Applicants", href: "/applicants" },
+    { label: "My Listings", href: "/my-listings" },
+    { label: "My Dashboard", href: "/dashboard/recruiter" },
   ],
   admin: [
     { label: "Dashboard", href: "/admin" },
@@ -84,7 +84,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-0 shrink-0 group">
           {/* "hire" in white */}
           <span className="text-[1.45rem] font-extrabold tracking-tight text-white leading-none">
-            Hire
+            Hirel
           </span>
           {/* animated loop icon */}
           <span className="relative inline-flex items-center">
