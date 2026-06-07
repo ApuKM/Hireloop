@@ -10,3 +10,26 @@ export interface StatSectionProps {
     stats: StatItem[];
     className?: string;
 }
+
+export interface JobFormValues {
+  title: string;
+  category: string;
+  jobType: string;
+  currency: string;
+  salaryMin: string;
+  salaryMax: string;
+  location: string;
+  isRemote: boolean;
+  deadline: string;
+  responsibilities: string;
+  requirements: string;
+  benefits: string;
+}
+
+export const MOCK_COMPANY = {
+  name: "Acme Corp",
+  status: "approved",
+  plan: "Growth",
+  activeJobs: 4,
+  jobLimit: 10,
+};
