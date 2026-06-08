@@ -26,10 +26,3 @@ export interface JobFormValues {
   benefits: string;
 }
 
-export const MOCK_COMPANY = {
-  name: "Acme Corp",
-  status: "approved",
-  plan: "Growth",
-  activeJobs: 4,
-  jobLimit: 10,
-};

@@ -1,6 +1,9 @@
-import React from 'react';
+import { getCompanyjobs } from '@/lib/api/jobs';
 
-const RecruiterJobs = () => {
+const RecruiterJobs = async() => {
+    const companyJobs = await getCompanyjobs("mock-company-id")
+    console.log(companyJobs)
+
     return (
         <div>
             <h1>Recruiter jobs</h1>
