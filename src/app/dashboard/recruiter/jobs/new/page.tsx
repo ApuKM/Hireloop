@@ -55,7 +55,12 @@ export default function PostJobPage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...data, companyId: "mock-company-id", status: "active" }),
+          body: JSON.stringify({
+            ...data,
+            companyId: "mock-company-id",
+            status: "active",
+            location: data.isRemote ? "Remote" : data.location,
+          }),
         },
       );
       if (res.ok) {

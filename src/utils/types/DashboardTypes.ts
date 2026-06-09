@@ -24,5 +24,6 @@ export interface JobFormValues {
   responsibilities: string;
   requirements: string;
   benefits: string;
+  status?: string | undefined;
 }
 
