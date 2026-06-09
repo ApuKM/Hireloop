@@ -2,12 +2,13 @@ import type { ComponentType, SVGProps } from "react";
 
 import {
   Bars,
-  Bell,
+  CloudArrowUpIn,
   Envelope,
   Gear,
   House,
-  Magnifier,
+  PersonWorker,
   Person,
+  Briefcase,
 } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 
@@ -15,13 +16,15 @@ export function Sidebar() {
   const navItems: {
     icon: ComponentType<SVGProps<SVGSVGElement>>;
     label: string;
+    href: string;
   }[] = [
-    { icon: House, label: "Home" },
-    { icon: Magnifier, label: "Search" },
-    { icon: Bell, label: "Notifications" },
-    { icon: Envelope, label: "Messages" },
-    { icon: Person, label: "Profile" },
-    { icon: Gear, label: "Settings" },
+    { icon: House, href: "/dashboard/recruiter", label: "Home" },
+    { icon: PersonWorker, href: "/dashboard/recruiter/jobs", label: "Jobs" },
+    { icon: CloudArrowUpIn, href: "/dashboard/recruiter/jobs/new", label: "Add a Job" },
+    { icon: Briefcase, href: "/dashboard/recruiter/company", label: "Company Info" },
+    { icon: Envelope, href: "/dashboard/recruiter/message", label: "Messages" },
+    { icon: Person, href: "/dashboard/recruiter/profile", label: "Profile" },
+    { icon: Gear, href: "/dashboard/recruiter/settings", label: "Settings" },
   ];
 
   const navContent = (
