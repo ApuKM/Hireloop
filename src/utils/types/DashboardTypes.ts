@@ -27,3 +27,13 @@ export interface JobFormValues {
   status?: string | undefined;
 }
 
+export interface CompanyData {
+    formName: string;
+    formIndustry: string;
+      formLocation: string;
+      formWebsite: string;
+      formEmployeeCount: string;
+      formDescription: string;
+      companyLogo: string | null;
+}
+
