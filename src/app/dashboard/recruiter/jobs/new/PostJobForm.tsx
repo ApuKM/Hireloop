@@ -23,6 +23,7 @@ const MOCK_COMPANY = {
 
 export default function PostJobForm({company}: {company: CompanyData}) {
   console.log("company from postjobform", company)
+  console.log(company.formName, company.companyLogo, company._id)
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isRemote, setIsRemote] = useState(false);
   const router = useRouter();
@@ -58,7 +59,9 @@ export default function PostJobForm({company}: {company: CompanyData}) {
           },
           body: JSON.stringify({
             ...data,
-            companyId: "mock",
+            companyId: company._id,
+            companyName: company.formName,
+            companyLogo: company.companyLogo,
             status: "active",
             location: data.isRemote ? "Remote" : data.location,
           }),
@@ -101,7 +104,7 @@ export default function PostJobForm({company}: {company: CompanyData}) {
             <div>
               <p className="text-sm font-medium text-white">
                 Posting as{" "}
-                <span className="font-bold">{MOCK_COMPANY.name}</span>
+                <span className="font-bold">{company.formName}</span>
               </p>
               <div className="flex items-center gap-2 mt-1">
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">

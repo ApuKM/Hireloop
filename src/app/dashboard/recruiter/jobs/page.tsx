@@ -1,9 +1,11 @@
 import { PostedJobsTable } from '@/components/dashboard/PostedJobsTable';
+import { getLoggedInRecruiterCompany } from '@/lib/api/company';
 import { getCompanyjobs } from '@/lib/api/jobs';
-import { JobFormValues } from '@/utils/types/DashboardTypes';
+import { CompanyData, JobFormValues } from '@/utils/types/DashboardTypes';
 
 const RecruiterJobs = async() => {
-    const companyJobs: JobFormValues[] = await getCompanyjobs("mock-company-id")
+    const company: CompanyData = await getLoggedInRecruiterCompany()
+    const companyJobs: JobFormValues[] = await getCompanyjobs(company._id)
     // console.log(companyJobs)
 
     return (

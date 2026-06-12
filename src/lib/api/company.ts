@@ -10,7 +10,7 @@ export const createCompany = async (newCompanyData: CompanyData) => {
 
 export const getRecruiterCompany = async (recruiterId: string | undefined) => {
   if (!recruiterId) return [];
-  return ServerFetch(`/api/my/companies?recruiterId=${recruiterId}`);
+  return ServerFetch(`/api/my/company?recruiterId=${recruiterId}`);
 };
 
 export const getLoggedInRecruiterCompany = async () => {

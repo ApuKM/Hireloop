@@ -1,14 +1,14 @@
 import React from "react";
 
 export interface StatItem {
-    icon: React.ReactNode;
-    label: string;
-    value: number | string;
+  icon: React.ReactNode;
+  label: string;
+  value: number | string;
 }
 
 export interface StatSectionProps {
-    stats: StatItem[];
-    className?: string;
+  stats: StatItem[];
+  className?: string;
 }
 
 export interface JobFormValues {
@@ -23,30 +23,42 @@ export interface JobFormValues {
   deadline: string;
   responsibilities: string;
   requirements: string;
-  benefits: string;
   status?: string | undefined;
 }
 
+export interface JobFormDB extends JobFormValues {
+  _id: {
+    $oid: string;
+  };
+  createdAt: {
+    $date: string;
+  };
+  companyName: string;
+  companyId: string;
+  companyLogo: string;
+}
+
 export interface CompanyData {
-    formName: string;
-    formIndustry: string;
-      formLocation: string;
-      formWebsite: string;
-      formEmployeeCount: string;
-      formDescription: string;
-      companyLogo: string | null;
-      recruiterId: string | undefined;
+  _id: string;
+  formName: string;
+  formIndustry: string;
+  formLocation: string;
+  formWebsite: string;
+  formEmployeeCount: string;
+  formDescription: string;
+  companyLogo: string | null;
+  recruiterId: string | undefined;
 }
 
 export interface BetterAuthUser {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    email: string;
-    emailVerified: boolean;
-    name: string;
-    image?: string | null;
-    role: string;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  emailVerified: boolean;
+  name: string;
+  image?: string | null;
+  role: string;
 }
 
 // If your variable can also be null, define it like this:
@@ -65,5 +77,3 @@ export interface CompanyDetails {
   logoUrl?: string;
   status: CompanyStatus;
 }
-
-

@@ -28,6 +28,7 @@ const NAV_LINKS: Record<Role, { label: string; href: string }[]> = {
     { label: "Saved Jobs", href: "/saved" },
   ],
   recruiter: [
+    { label: "Browse Jobs", href: "/jobs" },
     { label: "Applicants", href: "/applicants" },
     { label: "My Listings", href: "/my-listings" },
     { label: "My Dashboard", href: "/dashboard/recruiter" },

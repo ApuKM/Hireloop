@@ -35,7 +35,7 @@ export default function CompanyProfile({
           </p>
         </div>
 
-        {!company ? (
+        {!company?._id ? (
           /* EMPTY STATE UI */
           <div className="dark bg-[#0a0a0a] border border-white/5 rounded-3xl p-16 flex flex-col items-center justify-center text-center h-[500px] shadow-2xl relative overflow-hidden">
             <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-80 h-80 bg-[#5a45ff]/10 rounded-full blur-[100px] pointer-events-none" />

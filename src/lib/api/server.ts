@@ -14,7 +14,7 @@ export const MutateData = async (path: string, data: CompanyData) => {
 };
 
 export const ServerFetch = async (path: string) => {
-  console.log("URL check:", serverUrl)
+  // console.log("URL check:", serverUrl)
   const res = await fetch(`${serverUrl}${path}`);
   return res.json();
 };
