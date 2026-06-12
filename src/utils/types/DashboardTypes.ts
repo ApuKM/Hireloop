@@ -35,5 +35,35 @@ export interface CompanyData {
       formEmployeeCount: string;
       formDescription: string;
       companyLogo: string | null;
+      recruiterId: string | undefined;
 }
+
+export interface BetterAuthUser {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    email: string;
+    emailVerified: boolean;
+    name: string;
+    image?: string | null;
+    role: string;
+}
+
+// If your variable can also be null, define it like this:
+export type UserSession = BetterAuthUser | null;
+
+type CompanyStatus = "Pending" | "Approved" | "Rejected";
+
+export interface CompanyDetails {
+  id: string;
+  name: string;
+  industry: string;
+  website: string;
+  location: string;
+  employeeCount: string;
+  description: string;
+  logoUrl?: string;
+  status: CompanyStatus;
+}
+
 

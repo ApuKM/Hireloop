@@ -19,6 +19,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CompanyData } from "@/utils/types/DashboardTypes";
 import { createCompany } from "@/lib/api/company";
+import { authClient } from "@/lib/auth-client";
 
 const fieldClassNames = {
   label: "text-gray-300 text-sm font-medium mb-1.5",
@@ -27,10 +28,12 @@ const fieldClassNames = {
 };
 
 const inputWrapperStyle =
-  "bg-[#111] border border-white/5 rounded-xl h-11 transition-colors data-[hover=true]:border-white/10 focus:border-[#5b5ef5] text-white placeholder:text-gray-600";
+  "w-full bg-zinc-900 border text-sm text-zinc-100 rounded-md px-3 py-2.5 outline-none transition-colors placeholder:text-zinc-500 focus:border-[#5b5ef5] disabled:opacity-50 disabled:cursor-not-allowed";
 
 export default function CompanyRegisterPage() {
   const router = useRouter();
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
 
   const [formName, setFormName] = useState("");
   const [formIndustry, setFormIndustry] = useState("");
@@ -96,6 +99,7 @@ export default function CompanyRegisterPage() {
       formEmployeeCount,
       formDescription,
       companyLogo: uploadedImageUrl,
+      recruiterId: user?.id,
     };
     // 2. Perform your actual save API logic here with all form data + uploadedImageUrl
     console.log("Saving company details...", payload);
@@ -143,7 +147,7 @@ export default function CompanyRegisterPage() {
                   <Label className={fieldClassNames.label}>Company Name</Label>
                   <Input
                     placeholder="e.g. Acme Corporation"
-                    className={inputWrapperStyle}
+                    className={`${inputWrapperStyle} focus:border-[#5b5ef5] `}
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
                   />
@@ -256,7 +260,7 @@ export default function CompanyRegisterPage() {
 
                 <div className="flex flex-col gap-2">
                   <label className={fieldClassNames.label}>Company Logo</label>
-                  <input
+                  <Input
                     type="file"
                     accept="image/png, image/jpeg"
                     ref={fileInputRef}
