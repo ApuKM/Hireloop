@@ -8,6 +8,7 @@ import {
 import { Card } from "@heroui/react"; // Adjust this import based on your exact Hero UI setup
 import { JobFormDB } from "@/utils/types/DashboardTypes";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function JobCard({ job }: { job: JobFormDB }) {
   // Format salary to look clean (e.g., "$40,000 - $44,998")
@@ -84,6 +85,7 @@ export default function JobCard({ job }: { job: JobFormDB }) {
       </Card.Content>
 
       <Card.Footer className="pt-6">
+        <Link href={`/jobs/${job._id}`}>
         <button className="flex items-center gap-2 text-sm font-medium text-white hover:text-zinc-300 transition-colors group">
           Apply Now
           <FiArrowRight
@@ -91,6 +93,7 @@ export default function JobCard({ job }: { job: JobFormDB }) {
             size={16}
           />
         </button>
+        </Link>
       </Card.Footer>
     </Card>
   );
