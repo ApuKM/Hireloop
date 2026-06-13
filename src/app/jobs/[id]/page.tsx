@@ -1,5 +1,6 @@
 import { getJobById } from "@/lib/api/jobs";
 import Image from "next/image";
+import Link from "next/link";
 import {
   FiMapPin,
   FiBriefcase,
@@ -82,9 +83,9 @@ const JobDetailsPage = async ({ params }: { params: { id: string } }) => {
 
             {/* Apply Button */}
             <div className="w-full md:w-auto">
-              <button className="w-full md:w-auto bg-[#f472b6] hover:bg-[#ec4899] text-zinc-950 font-bold py-3 px-8 rounded-xl transition-all shadow-[0_0_15px_rgba(244,114,182,0.3)] hover:shadow-[0_0_25px_rgba(244,114,182,0.5)] transform hover:-translate-y-0.5">
+              <Link href={`/jobs/${id}/apply`} className="w-full md:w-auto bg-[#f472b6] hover:bg-[#ec4899] text-zinc-950 font-bold py-3 px-8 rounded-xl transition-all shadow-[0_0_15px_rgba(244,114,182,0.3)] hover:shadow-[0_0_25px_rgba(244,114,182,0.5)] transform hover:-translate-y-0.5">
                 Apply Now
-              </button>
+              </Link>
               <p className="text-center md:text-right mt-3 text-xs text-zinc-500 flex items-center justify-center md:justify-end gap-1">
                 <FiClock /> Posted{" "}
                 {formatDate(job.createdAt.$date || job.createdAt)}

@@ -16,7 +16,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { SignUpFormData } from "@/utils/types/HomePageTypes";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type Role = "seeker" | "recruiter";
 
@@ -30,6 +30,8 @@ export default function SignUpForm() {
     role: "seeker",
   });
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
 
   // Processing & UI States
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -111,7 +113,7 @@ export default function SignUpForm() {
       console.log("Account successfully created:", data);
 
       // Redirect to dashboard or login page upon success
-      router.push("/");
+      router.push(redirectTo);
     } catch (err) {
       setApiError(
         "Something went wrong establishing a connection. Please try again.",
@@ -318,7 +320,7 @@ export default function SignUpForm() {
           <p className="text-xs text-gray-400">
             Already have an account?{" "}
             <Link
-              href="/auth/login"
+              href={`/auth/login?redirect=${redirectTo}`}
               className="text-[#5a45ff] hover:text-[#7664ff] hover:underline font-medium text-xs ml-1 transition-colors"
             >
               Sign In

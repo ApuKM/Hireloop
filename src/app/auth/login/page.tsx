@@ -15,10 +15,13 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { LoginFormInputs } from "@/utils/types/HomePageTypes";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
-    const router = useRouter()
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/"
+
   const {
     register,
     handleSubmit,
@@ -36,7 +39,6 @@ export default function LoginForm() {
         await authClient.signIn.email({
           email: data.email,
           password: data.password,
-          callbackURL: "/",
         });
       if (authError) {
         setError("root", {
@@ -45,8 +47,8 @@ export default function LoginForm() {
         });
         return;
       }
-      console.log("Login succesful:", data);
-      router.push("/")
+      // console.log("Login succesful:", data);
+      router.push(redirectTo);
     } catch (err) {
       setError("root", { message: "Network error. Please try again later." });
     }
@@ -176,7 +178,7 @@ export default function LoginForm() {
           <p className="text-xs text-gray-400">
             Dont have an account?{" "}
             <Link
-              href="/auth/register"
+              href={`/auth/register?redirect=${redirectTo}`}
               className="text-[#5a45ff] hover:text-[#7664ff] hover:underline font-medium text-xs ml-1 transition-colors"
             >
               Sign Up
