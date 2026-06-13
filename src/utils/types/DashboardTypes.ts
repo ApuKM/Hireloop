@@ -27,9 +27,7 @@ export interface JobFormValues {
 }
 
 export interface JobFormDB extends JobFormValues {
-  _id: {
-    $oid: string;
-  };
+  _id: string;
   createdAt: {
     $date: string;
   };
