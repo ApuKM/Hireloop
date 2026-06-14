@@ -18,7 +18,7 @@ export default async function JobCardContainerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#09090b] pt-12">
+    <div className="min-h-screen bg-[#09090b] ">
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8 py-18 ">
         {/* Container Header */}
         <div className="mb-8  text-center">

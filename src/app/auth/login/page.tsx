@@ -43,7 +43,7 @@ export default function LoginForm() {
       if (authError) {
         setError("root", {
           message:
-            authError.message || "Failed to create account. Please try again.",
+            authError.message || "Failed to login. Please try again.",
         });
         return;
       }

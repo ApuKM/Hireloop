@@ -45,7 +45,7 @@ export default function ApplyFormClient({ job, applicant }: Props) {
       coverLetter: String(formData.get("coverLetter") ?? ""),
     };
 
-    console.log("payload from Job apply form", payload);
+    // console.log("payload from Job apply form", payload);
     const res = await submitApplication(payload);
     if (res.insertedId) {
       toast.success("Application successful");
