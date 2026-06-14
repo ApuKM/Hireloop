@@ -26,12 +26,13 @@ const NAV_LINKS: Record<Role, { label: string; href: string }[]> = {
     { label: "Browse Jobs", href: "/jobs" },
     { label: "My Applications", href: "/applications" },
     { label: "Saved Jobs", href: "/saved" },
+    { label: "Pricing", href: "/pricing" },
   ],
   recruiter: [
     { label: "Browse Jobs", href: "/jobs" },
     { label: "Applicants", href: "/applicants" },
-    { label: "My Listings", href: "/my-listings" },
     { label: "My Dashboard", href: "/dashboard/recruiter" },
+    { label: "Pricing", href: "/pricing" },
   ],
   admin: [
     { label: "Dashboard", href: "/admin" },

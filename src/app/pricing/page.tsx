@@ -42,16 +42,12 @@ export default function PricingPage() {
                 aria-label="Pricing plans toggle options"
                 className="w-fit *:h-6 *:w-fit *:px-3 *:text-sm *:font-normal"
               >
-                <Tabs.Tab
-                  id="seekers"
-                >
+                <Tabs.Tab id="seekers">
                   For Seekers
                   <Tabs.Indicator className="bg-warning" />
                   <Tabs.Separator />
                 </Tabs.Tab>
-                <Tabs.Tab
-                  id="recruiters"
-                >
+                <Tabs.Tab id="recruiters">
                   For Recruiters
                   <Tabs.Indicator className="bg-warning" />
                 </Tabs.Tab>
@@ -114,11 +110,16 @@ export default function PricingPage() {
                 </Card.Content>
 
                 <Card.Footer className="px-6 pb-6 pt-8">
-                  <Button
-                    className={`w-full ${plan.isPopular ? "bg-orange-400 text-white" : "text-orange-600 bg-white"}`}
-                  >
-                    {plan.price === "$0" ? "Get Started" : "Choose Plan"}
-                  </Button>
+                  <form action="/api/checkout_sessions" method="POST" className="w-full">
+                    <section>
+                      <Button
+                      type="submit"
+                        className={`w-full ${plan.isPopular ? "bg-orange-400 text-white" : "text-orange-600 bg-white"}`}
+                      >
+                        {plan.price === "$0" ? "Get Started" : "Choose Plan"}
+                      </Button>
+                    </section>
+                  </form>
                 </Card.Footer>
               </Card>
             ),
