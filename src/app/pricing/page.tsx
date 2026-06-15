@@ -111,6 +111,7 @@ export default function PricingPage() {
 
                 <Card.Footer className="px-6 pb-6 pt-8">
                   <form action="/api/checkout_sessions" method="POST" className="w-full">
+                  <input type="hidden" name="plan_id" value={plan.id}/>
                     <section>
                       <Button
                       type="submit"

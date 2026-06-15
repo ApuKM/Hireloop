@@ -2,6 +2,7 @@ import { Faq, PricingPlan } from "@/utils/types/PricingTypes";
 
 export const seekerPlans: PricingPlan[] = [
   {
+    id: "seeker_free",
     name: "Free",
     price: "$0",
     period: "/forever",
@@ -14,6 +15,7 @@ export const seekerPlans: PricingPlan[] = [
     ],
   },
   {
+    id: "seeker_pro",
     name: "Pro",
     price: "$19",
     period: "/month",
@@ -27,6 +29,7 @@ export const seekerPlans: PricingPlan[] = [
     ],
   },
   {
+    id: "seeker_premium",
     name: "Premium",
     price: "$39",
     period: "/month",
@@ -42,6 +45,7 @@ export const seekerPlans: PricingPlan[] = [
 
 export const recruiterPlans: PricingPlan[] = [
   {
+    id: "recruiter_free",
     name: "Free",
     price: "$0",
     period: "/forever",
@@ -53,6 +57,7 @@ export const recruiterPlans: PricingPlan[] = [
     ],
   },
   {
+    id: "recruiter_growth",
     name: "Growth",
     price: "$49",
     period: "/month",
@@ -66,6 +71,7 @@ export const recruiterPlans: PricingPlan[] = [
     ],
   },
   {
+    id: "recruiter_enterprise",
     name: "Enterprise",
     price: "$149",
     period: "/month",
