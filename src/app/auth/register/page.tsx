@@ -28,6 +28,7 @@ export default function SignUpForm() {
     password: "",
     imageUrl: "",
     role: "seeker",
+    plan: "seeker_free"
   });
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -89,19 +90,16 @@ export default function SignUpForm() {
       setApiError("Please fill out all required fields.");
       return;
     }
-
+    const plan = formData.role === "seeker" ? "seeker_free" : "recruiter_free";
     try {
       setIsLoading(true);
-      // Simulating network latency
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
-      // console.log("Form Data successfully processed:", formData);
-      // Proceed to routing or success state here
       const { data, error: authError } = await authClient.signUp.email({
         name: formData.username,
         email: formData.email,
         password: formData.password,
         image: formData.imageUrl ? formData.imageUrl : undefined,
-        role: formData.role,  
+        role: formData.role, 
+        plan 
       });
       // console.log(data)
       if (authError) {

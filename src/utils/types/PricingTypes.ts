@@ -1,5 +1,3 @@
-
-
 export interface PricingFeature {
   name: string;
 }
@@ -15,6 +13,17 @@ export interface PricingPlan {
 }
 
 export interface Faq {
-    question: string;
-    answer: string;
+  question: string;
+  answer: string;
+}
+
+export interface Plan {
+  id: string;
+  name: string;
+  maxApplicationsPerMonth: number;
+}
+
+export interface SubInfo {
+  customerEmail: string;
+  planId: string | undefined;
 }

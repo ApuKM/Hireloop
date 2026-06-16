@@ -7,6 +7,8 @@ import { getJobById } from "@/lib/api/jobs";
 import { getApplicationsByApplicant } from "@/lib/api/applications";
 import { RawApplicantData } from "@/utils/types/JobTypes";
 import Link from "next/link";
+import { getPlanById } from "@/lib/api/plans";
+import { Plan } from "@/utils/types/PricingTypes";
 
 const ApplyJobPage = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
@@ -16,11 +18,13 @@ const ApplyJobPage = async ({ params }: { params: { id: string } }) => {
     user?.id,
   );
   
-  const plan = {
-    name: "Free",
-    maxApplicationsPerMonth: 3,
-  };
-  
+  // const plan = {
+  //   name: "Free",
+  //   maxApplicationsPerMonth: 3,
+  // };
+  const plan: Plan = await getPlanById(user?.plan)
+   console.log(plan, user?.plan)
+   
   const job: JobFormDB = await getJobById(id);
 
   if (!user) {
@@ -49,7 +53,7 @@ const ApplyJobPage = async ({ params }: { params: { id: string } }) => {
     );
   }
 
-  const isLimitReached = applications.length >= plan.maxApplicationsPerMonth;
+  const isLimitReached = plan.maxApplicationsPerMonth !== null && applications.length >= plan.maxApplicationsPerMonth;
 
   return (
     <main className="min-h-screen bg-linear-to-b from-default-50 via-background to-default-100">

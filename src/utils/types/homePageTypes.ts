@@ -12,6 +12,7 @@ export interface SignUpFormData {
   password: string;
   imageUrl?: string;
   role: string;
+  plan: string;
 }
 
 export interface LoginFormInputs {

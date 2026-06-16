@@ -1,18 +1,18 @@
-import { NextResponse } from 'next/server'
-import { headers } from 'next/headers'
-import { PRICE_ID, stripe } from '@/lib/stripe';
-import { getUserSession } from '@/utils/sessions/sessions';
+import { NextResponse } from "next/server";
+import { headers } from "next/headers";
+import { PRICE_ID, stripe } from "@/lib/stripe";
+import { getUserSession } from "@/utils/sessions/sessions";
 
 export async function POST(request) {
   try {
-    const headersList = await headers()
-    const origin = headersList.get('origin')
+    const headersList = await headers();
+    const origin = headersList.get("origin");
 
     const user = await getUserSession();
 
     const formData = await request.formData();
-    const planId = formData.get("plan_id")
-    const priceId = PRICE_ID[planId]
+    const planId = formData.get("plan_id");
+    const priceId = PRICE_ID[planId];
 
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
@@ -24,14 +24,15 @@ export async function POST(request) {
           quantity: 1,
         },
       ],
-      mode: 'subscription',
+      mode: "subscription",
+      metadata: { planId },
       success_url: `${origin}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,
     });
-    return NextResponse.redirect( session.url, 303)
+    return NextResponse.redirect(session.url, 303);
   } catch (err) {
     return NextResponse.json(
       { error: err.message },
-      { status: err.statusCode || 500 }
-    )
+      { status: err.statusCode || 500 },
+    );
   }
 }
