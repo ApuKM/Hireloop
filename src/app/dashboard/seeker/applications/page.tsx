@@ -1,4 +1,4 @@
-import {  SeekerApplicationsTable } from '@/components/dashboard/PostedJobsTable';
+import {  SeekerApplicationsTable } from '@/components/dashboard/SeekerApplicationsTable';
 import { getApplicationsByApplicant } from '@/lib/api/applications';
 import { getUserSession } from '@/utils/sessions/sessions';
 import { RawApplicantData } from '@/utils/types/JobTypes';

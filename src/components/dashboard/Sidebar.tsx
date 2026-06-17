@@ -13,8 +13,14 @@ import {
 } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
-import { PiBookmarkSimple, PiSquaresFour } from "react-icons/pi";
+import {
+  PiBookmarkSimple,
+  PiSquaresFour,
+  PiUserSquareLight,
+} from "react-icons/pi";
 import { getUserSession } from "@/utils/sessions/sessions";
+import { BsBuildingSlash } from "react-icons/bs";
+import { BiWallet } from "react-icons/bi";
 
 export async function Sidebar() {
   const user = await getUserSession();
@@ -83,14 +89,57 @@ export async function Sidebar() {
     },
   ];
 
+  const adminNavItems: {
+    icon: ElementType;
+    label: string;
+    href: string;
+  }[] = [
+    {
+      icon: PiSquaresFour,
+      label: "Dashboard",
+      href: "/dashboard/admin",
+    },
+    {
+      icon: PiUserSquareLight,
+      label: "Users",
+      href: "/dashboard/admin/users",
+    },
+    {
+      icon: BsBuildingSlash,
+      label: "Companies",
+      href: "/dashboard/admin/companies",
+    },
+    {
+      icon: Briefcase,
+      label: "Jobs",
+      href: "/dashboard/admin/jobs",
+    },
+    {
+      icon: BiWallet,
+      label: "Payments",
+      href: "/dashboard/admin/payments",
+    },
+    {
+      icon: Gear,
+      label: "Settings",
+      href: "/dashboard/admin/settings",
+    },
+  ];
+
   const navLinksMap = {
     recruiter: recruiterNavItems,
     seeker: seekerNavItems,
+    admin: adminNavItems,
   };
 
   // 2. Strongly typed the role to match the keys of navLinksMap
   // type RoleType = keyof typeof navLinksMap;
-  const roleKey = user?.role === "recruiter" ? "recruiter" : "seeker";
+  const roleKey =
+    user?.role === "recruiter"
+      ? "recruiter"
+      : user?.role === "admin"
+        ? "admin"
+        : "seeker";
   const navItems = navLinksMap[roleKey];
 
   const navContent = (

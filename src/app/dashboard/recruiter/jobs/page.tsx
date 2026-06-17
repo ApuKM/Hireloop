@@ -1,3 +1,4 @@
+
 import { PostedJobsTable } from '@/components/dashboard/PostedJobsTable';
 import { getLoggedInRecruiterCompany } from '@/lib/api/company';
 import { getCompanyjobs } from '@/lib/api/jobs';

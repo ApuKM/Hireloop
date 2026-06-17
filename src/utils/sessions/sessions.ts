@@ -11,7 +11,7 @@ export const getUserSession = async () => {
 };
 
 
-export const requireRole = async (role: "seeker" | "recruiter") => {
+export const requireRole = async (role: "seeker" | "recruiter" | "admin") => {
   const user = await getUserSession();
 
   if (!user) {
