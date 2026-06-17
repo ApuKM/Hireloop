@@ -3,7 +3,7 @@ import HeroBanner from "@/components/homepage/Banner";
 
 export default function Home() {
   return (
-    <div className="bg-zinc-50 font-sans dark:bg-black mt-12">
+    <div className="bg-zinc-50 font-sans dark:bg-black ">
     <HeroBanner />
     </div>
   );

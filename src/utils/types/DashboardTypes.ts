@@ -48,6 +48,7 @@ export interface CompanyData {
   recruiterId: string | undefined;
 }
 
+export type UserRole = "recruiter" | "seeker";
 export interface BetterAuthUser {
   id: string;
   createdAt: Date;
@@ -56,7 +57,7 @@ export interface BetterAuthUser {
   emailVerified: boolean;
   name: string;
   image?: string | null;
-  role: string;
+  role: UserRole;
 }
 
 // If your variable can also be null, define it like this:

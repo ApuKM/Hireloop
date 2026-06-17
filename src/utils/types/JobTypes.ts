@@ -16,16 +16,16 @@ export interface JobApplicationPayload {
   coverLetter?: string;
 }
 
-export interface MongoOid {
-  $oid: string;
-}
+// export interface MongoOid {
+//   $oid: string;
+// }
 
-export interface MongoDate {
-  $date: string;
-}
+// export interface MongoDate {
+//   $date: string;
+// }
 
 export interface RawApplicantData {
-  _id: MongoOid;
+  _id: string;
   jobId: string; // Stored as a plain string ID in this document
   applicantId: string; // Stored as a plain string ID in this document
   applicantEmail: string;
@@ -33,5 +33,5 @@ export interface RawApplicantData {
   portfolioUrl: string;
   linkedinUrl: string;
   coverLetter: string;
-  createdAt: MongoDate;
+  createdAt: string;
 }

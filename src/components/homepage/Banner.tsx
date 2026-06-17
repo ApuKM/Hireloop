@@ -36,7 +36,7 @@ export default function HeroSection() {
   const trendingTags: string[] = ['Product Designer', 'AI Engineering', 'Dev-ops Engineer'];
 
   return (
-    <section className="relative min-h-screen bg-black text-white overflow-hidden flex flex-col items-center pt-24 pb-12 px-4 font-sans">
+    <section className="relative min-h-screen bg-black text-white overflow-hidden flex flex-col items-center py-16 px-4 font-sans">
       
       {/* --- Top Text Content --- */}
       <div className="flex flex-col items-center z-10 w-full max-w-4xl text-center">
