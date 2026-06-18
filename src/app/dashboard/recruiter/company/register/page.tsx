@@ -17,7 +17,7 @@ import {
 import { FiUploadCloud, FiX, FiArrowLeft } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
-import { CompanyData } from "@/utils/types/DashboardTypes";
+import {  CompanyInput } from "@/utils/types/DashboardTypes";
 import { createCompany } from "@/lib/api/company";
 import { authClient } from "@/lib/auth-client";
 
@@ -91,18 +91,19 @@ export default function CompanyRegisterPage() {
       }
     }
 
-    const payload: CompanyData = {
+    const payload: CompanyInput = {
       formName,
       formIndustry,
       formLocation,
       formWebsite,
       formEmployeeCount,
       formDescription,
+      status: "pending",
       companyLogo: uploadedImageUrl,
       recruiterId: user?.id,
     };
     // 2. Perform your actual save API logic here with all form data + uploadedImageUrl
-    console.log("Saving company details...", payload);
+    // console.log("Saving company details...", payload);
 
     const res = await createCompany(payload);
     if (res.modifiedCount) {
@@ -346,7 +347,7 @@ export default function CompanyRegisterPage() {
 
             {/* Footer */}
             <div className="p-8 py-6 border-t border-white/5 flex justify-end gap-4 bg-[#0a0a0a]">
-              <Link href="dashboard/recruiter/company">
+              <Link href="/dashboard/recruiter/company">
                 <Button
                   variant="tertiary"
                   className="bg-white text-black font-bold px-10 py-3 rounded-xl hover:bg-gray-200 transition-colors shadow-lg shadow-white/10"

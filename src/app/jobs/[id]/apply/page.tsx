@@ -18,10 +18,6 @@ const ApplyJobPage = async ({ params }: { params: { id: string } }) => {
     user?.id,
   );
   
-  // const plan = {
-  //   name: "Free",
-  //   maxApplicationsPerMonth: 3,
-  // };
   const plan: Plan = await getPlanById(user?.plan)
    console.log(plan, user?.plan)
    

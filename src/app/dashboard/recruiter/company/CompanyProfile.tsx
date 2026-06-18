@@ -4,15 +4,13 @@ import React, { useState } from "react";
 import { Button, Avatar, Separator } from "@heroui/react";
 import { FiBriefcase, FiMapPin, FiUsers, FiGlobe } from "react-icons/fi";
 import Link from "next/link";
-import { CompanyData, UserSession } from "@/utils/types/DashboardTypes";
+import { CompanyData } from "@/utils/types/DashboardTypes";
 
 interface CompanyProfileProps {
-  recruiter: UserSession;
   recruiterCompany: CompanyData | null;
 }
 
 export default function CompanyProfile({
-  recruiter,
   recruiterCompany,
 }: CompanyProfileProps) {
   // State to simulate whether a company exists

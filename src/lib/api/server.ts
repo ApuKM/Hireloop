@@ -1,15 +1,14 @@
-import { CompanyData } from "@/utils/types/DashboardTypes";
-import { JobApplicationPayload } from "@/utils/types/JobTypes";
-import { SubInfo } from "@/utils/types/PricingTypes";
+
 
 const serverUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export const MutateData = async (
+export const MutateData = async <T,>(
   path: string,
-  data: CompanyData | JobApplicationPayload | SubInfo,
+  data: T,
+  method = "POST",
 ) => {
   const res = await fetch(`${serverUrl}${path}`, {
-    method: "POST",
+    method: method,
     headers: {
       "Content-Type": "application/json",
     },

@@ -36,6 +36,8 @@ export interface JobFormDB extends JobFormValues {
   companyLogo: string;
 }
 
+export type CompanyStatus = "approved" | "pending" | "rejected";
+
 export interface CompanyData {
   _id: string;
   formName: string;
@@ -45,10 +47,12 @@ export interface CompanyData {
   formEmployeeCount: string;
   formDescription: string;
   companyLogo: string | null;
+  status: CompanyStatus;
   recruiterId: string | undefined;
 }
 
-export type UserRole = "recruiter" | "seeker";
+export type CompanyInput = Omit<CompanyData, "_id">
+
 export interface BetterAuthUser {
   id: string;
   createdAt: Date;
@@ -57,22 +61,21 @@ export interface BetterAuthUser {
   emailVerified: boolean;
   name: string;
   image?: string | null;
-  role: UserRole;
+  role: string;
 }
 
 // If your variable can also be null, define it like this:
 export type UserSession = BetterAuthUser | null;
 
-type CompanyStatus = "Pending" | "Approved" | "Rejected";
 
-export interface CompanyDetails {
-  id: string;
-  name: string;
-  industry: string;
-  website: string;
-  location: string;
-  employeeCount: string;
-  description: string;
-  logoUrl?: string;
-  status: CompanyStatus;
-}
+// export interface CompanyDetails {
+//   id: string;
+//   name: string;
+//   industry: string;
+//   website: string;
+//   location: string;
+//   employeeCount: string;
+//   description: string;
+//   logoUrl?: string;
+//   status: CompanyStatus;
+// }
