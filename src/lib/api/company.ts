@@ -1,12 +1,12 @@
 "use server";
 
 import { CompanyInput, CompanyStatus } from "@/utils/types/DashboardTypes";
-import { MutateData, ServerFetch } from "./server";
+import { MutateData, ProtectedFetch, ServerFetch } from "./server";
 import { getUserSession } from "@/utils/sessions/sessions";
 import { revalidatePath } from "next/cache";
 
 export const getAllCompany = async () => {
-  return ServerFetch("/api/companies");
+  return ProtectedFetch("/api/companies");
 };
 
 export const createCompany = async (newCompanyData: CompanyInput) => {

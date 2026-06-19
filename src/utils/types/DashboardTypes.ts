@@ -49,6 +49,9 @@ export interface CompanyData {
   companyLogo: string | null;
   status: CompanyStatus;
   recruiterId: string | undefined;
+  recruiterEmail: string | undefined;
+  createdAt: string | undefined;
+  jobCount: number | undefined;
 }
 
 export type CompanyInput = Omit<CompanyData, "_id">
@@ -79,3 +82,23 @@ export type UserSession = BetterAuthUser | null;
 //   logoUrl?: string;
 //   status: CompanyStatus;
 // }
+export interface UserData {
+  id: string;
+  name: string;
+  email: string;
+
+  role?: string;
+
+  image?: string | null;
+
+  emailVerified: boolean;
+
+  banned: boolean | null;
+  banReason?: string | null;
+  banExpires?: Date | null;
+
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type UsersList = UserData[];

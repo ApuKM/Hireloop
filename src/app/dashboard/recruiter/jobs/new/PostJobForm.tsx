@@ -458,7 +458,7 @@ export default function PostJobForm({ company }: { company: CompanyData }) {
               </button>
               <button
                 type="submit"
-                disabled={isLimitReached || isSubmitting}
+                disabled={isSubmitting}
                 className="flex items-center justify-center bg-[#5b5ef5] hover:bg-[#4a4de0] text-white font-semibold text-sm px-6 py-2.5 
                  rounded-md hover:shadow-[0_0_28px_rgba(91,94,245,0.4)] disabled:opacity-50 disabled:cursor-not-allowed
                  transition-all duration-200 min-w-[120px]"

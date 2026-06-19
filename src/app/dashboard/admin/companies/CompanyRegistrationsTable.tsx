@@ -2,11 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Pagination, Table, Button, toast } from "@heroui/react";
-import {
-  BetterAuthUser,
-  CompanyData,
-  CompanyStatus,
-} from "@/utils/types/DashboardTypes";
+import { CompanyData, CompanyStatus } from "@/utils/types/DashboardTypes";
 import Image from "next/image";
 import { updateCompany } from "@/lib/api/company";
 
@@ -21,12 +17,10 @@ const ROWS_PER_PAGE = 5; // To match the sample image
 
 interface CompanyRegistrationsTableProps {
   companies: CompanyData[];
-  user: BetterAuthUser | null;
 }
 
 export function CompanyRegistrationsTable({
   companies,
-  user,
 }: CompanyRegistrationsTableProps) {
   const [page, setPage] = useState(1);
   const totalPages = Math.ceil(companies.length / ROWS_PER_PAGE);
@@ -70,39 +64,42 @@ export function CompanyRegistrationsTable({
   };
 
   return (
-    <Table className="bg-zinc-950 rounded-lg p-2 dark:bg-background">
+    <Table className="bg-zinc-950 rounded-lg p-2 ">
       <Table.ScrollContainer>
         <Table.Content
           aria-label="Company registrations table"
           className="min-w-[1000px] text-zinc-100"
         >
-          <Table.Header className={"mb-2"}>
-            <Table.Column className="font-semibold text-zinc-400">
+          <Table.Header className="h-14">
+            <Table.Column className="font-semibold text-zinc-400 py-4">
               Company Name
             </Table.Column>
-            <Table.Column className="font-semibold text-zinc-400">
+            <Table.Column className="font-semibold text-zinc-400 py-4">
               Recruiter Email
             </Table.Column>
-            <Table.Column className="font-semibold text-zinc-400">
+            <Table.Column className="font-semibold text-zinc-400 py-4">
               Industry
             </Table.Column>
-            <Table.Column className="font-semibold text-zinc-400">
+            <Table.Column className="font-semibold text-zinc-400 py-4">
               Status
             </Table.Column>
-            <Table.Column className="font-semibold text-zinc-400">
+            <Table.Column className="font-semibold text-zinc-400 py-4">
+              Job Count
+            </Table.Column>
+            <Table.Column className="font-semibold text-zinc-400 py-4">
               Date Submitted
             </Table.Column>
-            <Table.Column className="font-semibold text-zinc-400">
+            <Table.Column className="font-semibold text-zinc-400 py-4">
               Actions
             </Table.Column>
           </Table.Header>
           <Table.Body
             items={paginatedItems}
-            className="divide-y divide-zinc-800"
+            className="divide-y divide-zinc-800 mt-2"
           >
             {(company) => (
               <Table.Row id={company._id}>
-                <Table.Cell>
+                <Table.Cell className="py-4">
                   <div className="flex items-center gap-3">
                     {/* The container MUST be relative for layout="fill" to work properly */}
                     <div className="relative size-10 flex items-center justify-center rounded-lg bg-zinc-800 text-zinc-100 font-bold text-lg overflow-hidden border border-zinc-700/50">
@@ -124,27 +121,34 @@ export function CompanyRegistrationsTable({
                     </span>
                   </div>
                 </Table.Cell>
-                <Table.Cell className="text-zinc-300 font-medium">
-                  {user?.email}
+                <Table.Cell className="text-zinc-300 font-medium py-4">
+                  {company?.recruiterEmail}
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell className="py-4">
                   <div className="flex gap-2 flex-wrap">
                     <span className="px-3 py-1 text-xs rounded-full bg-zinc-800 text-zinc-300 font-medium border border-zinc-700">
                       {company.formIndustry}
                     </span>
                   </div>
                 </Table.Cell>
-                <Table.Cell>{renderStatus(company?.status)}</Table.Cell>
-                <Table.Cell className="text-zinc-300">
-                  {company.formLocation}
+                <Table.Cell className="py-4">
+                  {renderStatus(company?.status)}
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell >
+                  <span className="px-3 py-1.5 font-medium bg-zinc-800 rounded-full border border-zinc-700 text-zinc-300">
+                    {company?.jobCount}
+                  </span>
+                </Table.Cell>
+                <Table.Cell className="text-zinc-300 py-4">
+                  {company?.createdAt?.split("T")[0]}
+                </Table.Cell>
+                <Table.Cell className="py-4">
                   <div className="flex gap-2 justify-end">
                     {/* Only show Approve for Pending and Rejected companies */}
                     {company.status !== "approved" && (
                       <Button
                         size="sm"
-                        className="rounded border-emerald-500/20 text-emerald-500 font-semibold hover:bg-emerald-500/10 px-4"
+                        className="rounded border-emerald-500/20 text-white font-semibold bg-emerald-600 hover:bg-emerald-500/50 px-4"
                         onClick={() => handleApprove(company._id)}
                       >
                         Approve
@@ -154,7 +158,7 @@ export function CompanyRegistrationsTable({
                     {company.status !== "rejected" && (
                       <Button
                         size="sm"
-                        className="rounded border-rose-500/20 text-rose-500 font-semibold hover:bg-rose-500/10 px-4"
+                        className="rounded border-rose-500/20 text-white bg-rose-600 font-semibold hover:bg-rose-500/50 px-4"
                         onClick={() => handleReject(company._id)}
                       >
                         Reject

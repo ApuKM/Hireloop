@@ -101,6 +101,7 @@ export default function CompanyRegisterPage() {
       status: "pending",
       companyLogo: uploadedImageUrl,
       recruiterId: user?.id,
+      recruiterEmail: user?.email,
     };
     // 2. Perform your actual save API logic here with all form data + uploadedImageUrl
     // console.log("Saving company details...", payload);
