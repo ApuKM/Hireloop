@@ -4,6 +4,10 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Button, Pagination, Table, toast } from "@heroui/react";
 import { UserData } from "@/utils/types/DashboardTypes";
+import { updateUserRole } from "@/lib/api/users";
+import {
+  AlertDialog
+} from "@heroui/react";
 
 const ROWS_PER_PAGE = 4;
 
@@ -44,6 +48,19 @@ function formatDate(dateValue: string | Date) {
 }
 
 export function UsersListTable({ users }: { users: UserData[] }) {
+  const [roleDialog, setRoleDialog] = useState<{
+    isOpen: boolean;
+    userId: string;
+    userName: string;
+    role: "seeker" | "recruiter" | "admin";
+  }>({
+    isOpen: false,
+    userId: "",
+    userName: "",
+    role: "seeker",
+  });
+
+  const [isUpdating, setIsUpdating] = useState(false);
   const [page, setPage] = useState(1);
 
   const totalPages = Math.max(1, Math.ceil(users.length / ROWS_PER_PAGE));
@@ -56,8 +73,27 @@ export function UsersListTable({ users }: { users: UserData[] }) {
   const start = users.length === 0 ? 0 : (page - 1) * ROWS_PER_PAGE + 1;
   const end = Math.min(page * ROWS_PER_PAGE, users.length);
 
-  const handleAction = async (message: string) => {
-    toast.success(message);
+  // Enforce the types directly in the function arguments
+  const handleRoleChange = async () => {
+    try {
+      setIsUpdating(true);
+
+      await updateUserRole(roleDialog.userId, roleDialog.role);
+
+      toast.success(`${roleDialog.userName} is now a ${roleDialog.role}`);
+
+      setRoleDialog({
+        isOpen: false,
+        userId: "",
+        userName: "",
+        role: "seeker",
+      });
+    } catch (error) {
+      console.error(error);
+      toast("Failed to update role");
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
   return (
@@ -146,12 +182,17 @@ export function UsersListTable({ users }: { users: UserData[] }) {
                   </Table.Cell>
 
                   <Table.Cell className="py-4">
-                    <div className="flex flex-wrap justify-end gap-2">
+                    <div className="flex items-center gap-2">
                       <Button
                         size="sm"
                         className="rounded-md border border-zinc-700 bg-zinc-800 px-3 font-medium text-zinc-200 hover:bg-zinc-700"
                         onPress={() =>
-                          handleAction(`Marked ${user.name} as seeker`)
+                          setRoleDialog({
+                            isOpen: true,
+                            userId: user.id,
+                            userName: user.name,
+                            role: "seeker",
+                          })
                         }
                       >
                         Make Seeker
@@ -161,17 +202,22 @@ export function UsersListTable({ users }: { users: UserData[] }) {
                         size="sm"
                         className="rounded-md border border-zinc-200 bg-zinc-100 px-3 font-medium text-zinc-900 hover:bg-zinc-200"
                         onPress={() =>
-                          handleAction(`Marked ${user.name} as recruiter`)
+                          setRoleDialog({
+                            isOpen: true,
+                            userId: user.id,
+                            userName: user.name,
+                            role: "recruiter",
+                          })
                         }
                       >
                         Make Recruiter
                       </Button>
 
-                      {user?.banned  ? (
+                      {user?.banned ? (
                         <Button
                           size="sm"
                           className="rounded-md border border-emerald-500/20 bg-emerald-600 px-3 font-medium text-white hover:bg-emerald-500"
-                          onPress={() => handleAction(`Activated ${user.name}`)}
+                          // onPress={() => handleAction(`Activated ${user.name}`)}
                         >
                           Activate
                         </Button>
@@ -179,7 +225,7 @@ export function UsersListTable({ users }: { users: UserData[] }) {
                         <Button
                           size="sm"
                           className="rounded-md border border-rose-500/20 bg-rose-600 px-3 font-medium text-white hover:bg-rose-500"
-                          onPress={() => handleAction(`Suspended ${user.name}`)}
+                          // onPress={() => handleAction(`Suspended ${user.name}`)}
                         >
                           Suspend
                         </Button>
@@ -188,7 +234,7 @@ export function UsersListTable({ users }: { users: UserData[] }) {
                       <Button
                         size="sm"
                         className="rounded-md border border-zinc-700 bg-transparent px-3 font-medium text-zinc-300 hover:bg-zinc-900"
-                        onPress={() => handleAction(`Deleted ${user.name}`)}
+                        // onPress={() => handleAction(`Deleted ${user.name}`)}
                       >
                         Delete
                       </Button>
@@ -248,6 +294,57 @@ export function UsersListTable({ users }: { users: UserData[] }) {
           </Pagination>
         </Table.Footer>
       </Table>
+      <AlertDialog
+        isOpen={roleDialog.isOpen}
+        onOpenChange={(open) =>
+          setRoleDialog((prev) => ({
+            ...prev,
+            isOpen: open,
+          }))
+        }
+      >
+        <AlertDialog.Backdrop>
+          <AlertDialog.Container>
+            <AlertDialog.Dialog className="border border-zinc-800 bg-zinc-950 text-zinc-100">
+              <AlertDialog.Header>
+                <AlertDialog.Icon />
+                <AlertDialog.Heading>Change User Role</AlertDialog.Heading>
+              </AlertDialog.Header>
+
+              <AlertDialog.Body>
+                Are you sure you want to change the role of{" "}
+                <span className="font-semibold">{roleDialog.userName}</span> to{" "}
+                <span className="font-semibold capitalize">
+                  {roleDialog.role}
+                </span>
+                ?
+              </AlertDialog.Body>
+
+              <AlertDialog.Footer>
+                <Button
+                  variant="outline"
+                  onPress={() =>
+                    setRoleDialog((prev) => ({
+                      ...prev,
+                      isOpen: false,
+                    }))
+                  }
+                >
+                  Cancel
+                </Button>
+
+                <Button
+                  variant="danger-soft"
+                  isPending={isUpdating}
+                  onPress={handleRoleChange}
+                >
+                  Confirm
+                </Button>
+              </AlertDialog.Footer>
+            </AlertDialog.Dialog>
+          </AlertDialog.Container>
+        </AlertDialog.Backdrop>
+      </AlertDialog>
     </div>
   );
 }

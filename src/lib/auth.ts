@@ -7,9 +7,8 @@ const client = new MongoClient(process.env.MONGODB_URI as string);
 const db = client.db(process.env.DB_NAME as string);
 
 export const auth = betterAuth({
-  //...
-   emailAndPassword: { 
-    enabled: true, 
+  emailAndPassword: {
+    enabled: true,
   },
   database: mongodbAdapter(db, {
     client,
@@ -18,17 +17,18 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         type: "string",
-        input: true,
-        defaultValue: "seeker"
+        input: false, // 👈 Prevents malicious client updates during sign-up
+        defaultValue: "seeker",
       },
       plan: {
         defaultValue: "seeker_free",
         type: "string",
-      }
-    }
+      },
+    },
   },
   plugins: [
-    admin()
-  ]
+    admin({
+      adminRoles: ["seeker", "admin", "recruiter"], 
+    }),
+  ],
 });
-
