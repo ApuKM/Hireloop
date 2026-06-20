@@ -35,3 +35,11 @@ export interface RawApplicantData {
   coverLetter: string;
   createdAt: string;
 }
+
+
+export interface GetJobsFilters {
+  searchQuery?: string;
+  category?: string;
+  jobType?: string;
+  isRemote?: boolean;
+}

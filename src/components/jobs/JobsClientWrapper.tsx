@@ -2,58 +2,69 @@
 
 import { JobFormDB } from "@/utils/types/DashboardTypes";
 import { JobFilters } from "@/utils/types/JobTypes";
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import JobFilterBar from "./JobFilter";
 import JobCard from "./JobCard";
 
 interface JobsClientWrapperProps {
-  initialJobs: JobFormDB[];
+  jobs: JobFormDB[];
 }
 
 export default function JobsClientWrapper({
-  initialJobs,
+  jobs,
 }: JobsClientWrapperProps) {
-  // 1. Initialize filter state
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // 1. Initialize state directly from the URL so reloading the page keeps filters
   const [filters, setFilters] = useState<JobFilters>({
-    searchQuery: "",
-    category: "All",
-    jobType: "All",
-    isRemote: false,
+    searchQuery: searchParams.get("searchQuery") || "",
+    category: searchParams.get("category") || "All",
+    jobType: searchParams.get("jobType") || "All",
+    isRemote: searchParams.get("isRemote") === "true",
   });
 
-  // 2. Handle state updates from the filter bar
+  // 2. Handle immediate state updates for the UI
   const handleFilterChange = (newFilters: Partial<JobFilters>) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
   };
 
-  // 3. Compute the filtered array purely on the client
-  const filteredJobs = useMemo(() => {
-    return initialJobs.filter((job) => {
-      const search = filters.searchQuery.toLowerCase();
-      const matchesSearch =
-        (job.title || "").toLowerCase().includes(search) ||
-        (job.companyName || "").toLowerCase().includes(search);
-      const matchesCategory =
-        filters.category === "All" || job.category === filters.category;
-      const matchesJobType =
-        filters.jobType === "All" || job.jobType === filters.jobType;
-      const matchesRemote = filters.isRemote ? job.isRemote === true : true;
+  // 3. Sync state to the URL with a Debounce
+  useEffect(() => {
+    // Wait 300ms after the user stops typing/clicking before pushing to the URL
+    const timeoutId = setTimeout(() => {
+      const params = new URLSearchParams(searchParams.toString());
 
-      return (
-        matchesSearch && matchesCategory && matchesJobType && matchesRemote
-      );
-    });
-  }, [initialJobs, filters]);
+      if (filters.searchQuery) params.set("searchQuery", filters.searchQuery);
+      else params.delete("searchQuery");
+
+      if (filters.category !== "All") params.set("category", filters.category);
+      else params.delete("category");
+
+      if (filters.jobType !== "All") params.set("jobType", filters.jobType);
+      else params.delete("jobType");
+
+      if (filters.isRemote) params.set("isRemote", "true");
+      else params.delete("isRemote");
+
+      // Update URL without refreshing the page or scrolling to the top
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [filters, pathname, router, searchParams]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 pb-12">
       {/* Interactive Filter Bar */}
       <JobFilterBar filters={filters} onFilterChange={handleFilterChange} />
 
-      {/* Results Grid */}
-      {filteredJobs.length > 0 ? (
+      {/* Results Grid - We just map over whatever the server gives us now! */}
+      {jobs.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredJobs.map((job) => (
+          {jobs.map((job) => (
             <JobCard key={job._id} job={job} />
           ))}
         </div>
