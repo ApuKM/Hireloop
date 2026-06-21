@@ -1,11 +1,8 @@
-// Replace with your actual DB call
-
 import JobsClientWrapper from "@/components/jobs/JobsClientWrapper";
 import { getJobs } from "@/lib/api/jobs";
 import { Spinner } from "@heroui/react";
 import { Suspense } from "react";
 
-// Next.js 15 requires awaiting searchParams
 export default async function JobsPage({
   searchParams,
 }: {
@@ -13,25 +10,29 @@ export default async function JobsPage({
 }) {
   const resolvedParams = await searchParams;
 
-  // Extract params with safe defaults
   const searchQuery = (resolvedParams.searchQuery as string) || "";
   const category = (resolvedParams.category as string) || "All";
   const jobType = (resolvedParams.jobType as string) || "All";
   const isRemote = resolvedParams.isRemote === "true";
+  
+  // NEW: Extract page and define a limit
+  const page = parseInt(resolvedParams.page as string) || 1;
+  const limit = 12; // Keep this matched with the pagination component
 
-  // Fetch from your database using the URL filters
-  // Ensure your DB query uses LIMIT (e.g., limit to 20) for pagination later
-  const jobs = await getJobs({
+  const { total, jobs } = await getJobs({
     searchQuery,
     category,
     jobType,
     isRemote,
+    page,
+    limit,
   });
+  // console.log("jobs", jobs)
 
   return (
     <div className="min-h-screen bg-[#09090b] ">
       <main className="w-full max-w-7xl mx-auto px-4 md:px-8 py-18 ">
-        <div className="mb-8  text-center">
+        <div className="mb-8 text-center">
           <h2 className="text-2xl font-bold text-white tracking-tight sm:text-3xl">
             Open Positions
           </h2>
@@ -40,8 +41,8 @@ export default async function JobsPage({
           </p>
         </div>
         
-        <Suspense fallback={<Spinner className="h-[60vh]" />}>
-          <JobsClientWrapper jobs={jobs} />
+        <Suspense fallback={<Spinner />}>
+          <JobsClientWrapper jobs={jobs} total={total} />
         </Suspense>
       </main>
     </div>

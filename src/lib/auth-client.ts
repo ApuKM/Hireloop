@@ -6,4 +6,9 @@ export const authClient = createAuthClient({
   /** The base URL of the server (optional if you're using the same domain) */
   baseURL: process.env.BETTER_AUTH_URL,
   plugins: [inferAdditionalFields<typeof auth>(), adminClient()],
+  // Reduce session polling to every 5 minutes instead of default frequent polling
+  sessionConfig: {
+    fetchOnMount: true,
+    fetchInterval: 5 * 60 * 1000, // 5 minutes in milliseconds
+  },
 });

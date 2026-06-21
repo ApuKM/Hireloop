@@ -42,4 +42,6 @@ export interface GetJobsFilters {
   category?: string;
   jobType?: string;
   isRemote?: boolean;
+  page?: number;
+  limit?: number;
 }

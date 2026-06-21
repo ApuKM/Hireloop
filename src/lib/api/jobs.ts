@@ -14,14 +14,18 @@ export const getJobs = async (filters: GetJobsFilters = {}) => {
   if (filters.category && filters.category !== "All") params.append("category", filters.category);
   if (filters.jobType && filters.jobType !== "All") params.append("jobType", filters.jobType);
   if (filters.isRemote) params.append("isRemote", "true");
+  
+  // NEW: Append Pagination Parameters
+  if (filters.page) params.append("page", filters.page.toString());
+  if (filters.limit) params.append("perPage", filters.limit.toString());
 
   const queryString = params.toString();
-  console.log(queryString)
+  
+  // Cleaned up the URL construction 
   const url = queryString ? `/api/jobs?${queryString}` : "/api/jobs";
 
   return ServerFetch(url);
 };
-
 
 export const getJobById = async(id: string) => {
     return ServerFetch(`/api/jobs/${id}`)

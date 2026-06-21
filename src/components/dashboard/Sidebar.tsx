@@ -112,7 +112,7 @@ export async function Sidebar() {
     {
       icon: Briefcase,
       label: "Jobs",
-      href: "/dashboard/admin/jobs",
+      href: "/jobs",
     },
     {
       icon: BiWallet,
