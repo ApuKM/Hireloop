@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Input,
@@ -17,7 +17,7 @@ import { LoginFormInputs } from "@/utils/types/HomePageTypes";
 import { authClient } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function LoginForm() {
+function LoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/"
@@ -33,8 +33,6 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
-      //   await new Promise((resolve) => setTimeout(resolve, 2000));
-      //   console.log("React Hook Form successfully extracted:", data);
       const { data: authData, error: authError } =
         await authClient.signIn.email({
           email: data.email,
@@ -47,7 +45,6 @@ export default function LoginForm() {
         });
         return;
       }
-      // console.log("Login succesful:", data);
       router.push(redirectTo);
     } catch (err) {
       setError("root", { message: "Network error. Please try again later." });
@@ -187,5 +184,13 @@ export default function LoginForm() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginForm() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <LoginFormContent />
+    </Suspense>
   );
 }

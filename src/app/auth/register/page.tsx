@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import {
   Input,
   Button,
@@ -20,7 +20,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 type Role = "seeker" | "recruiter";
 
-export default function SignUpForm() {
+function SignUpFormContent() {
   // Centralized Form State
   const [formData, setFormData] = useState<SignUpFormData>({
     username: "",
@@ -93,14 +93,19 @@ export default function SignUpForm() {
     const plan = formData.role === "seeker" ? "seeker_free" : "recruiter_free";
     try {
       setIsLoading(true);
-      const { data, error: authError } = await authClient.signUp.email({
+      type SignUpPayload = Parameters<typeof authClient.signUp.email>[0] & {
+        role: Role;
+        plan: string;
+      };
+      const payload: SignUpPayload = {
         name: formData.username,
         email: formData.email,
         password: formData.password,
         image: formData.imageUrl ? formData.imageUrl : undefined,
         role: formData.role, 
         plan 
-      });
+      };
+      const { data, error: authError } = await authClient.signUp.email(payload);
       // console.log(data)
       if (authError) {
         setApiError(
@@ -327,5 +332,13 @@ export default function SignUpForm() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignUpForm() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <SignUpFormContent />
+    </Suspense>
   );
 }

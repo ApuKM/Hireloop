@@ -27,8 +27,6 @@ export const auth = betterAuth({
     },
   },
   plugins: [
-    admin({
-      roles: ["seeker", "admin", "recruiter"], 
-    }),
+    admin({}),
   ],
 });

@@ -1,3 +1,5 @@
+"use server"
+
 import { headers } from "next/headers";
 import { auth } from "../auth";
 import { revalidatePath } from "next/cache";
@@ -14,14 +16,14 @@ export const getUsersList = async () => {
   return users;
 };
 
-// Define a union type matching your roles exactly
-type AppUserRole = "seeker" | "recruiter" | "admin";
+// Define a union type matching the auth system roles
+type AppUserRole = "user" | "admin";
 
 export const updateUserRole = async (userId: string, role: AppUserRole) => {
   const data = await auth.api.setRole({
     body: {
       userId,
-      role // This will now accept "seeker", "admin", or "recruiter" seamlessly!
+      role
     },
     // This endpoint requires session cookies.
     headers: await headers(),

@@ -11,7 +11,7 @@ export interface SignUpFormData {
   email: string;
   password: string;
   imageUrl?: string;
-  role: string;
+  role: "seeker" | "recruiter";
   plan: string;
 }
 

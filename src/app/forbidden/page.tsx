@@ -1,4 +1,6 @@
 
+"use client";
+
 import Link from 'next/link';
 import { BiHome } from 'react-icons/bi';
 import { BsArrowLeft } from 'react-icons/bs';

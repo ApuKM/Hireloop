@@ -52,12 +52,12 @@ export function UsersListTable({ users }: { users: UserData[] }) {
     isOpen: boolean;
     userId: string;
     userName: string;
-    role: "seeker" | "recruiter" | "admin";
+    role: "user" | "admin";
   }>({
     isOpen: false,
     userId: "",
     userName: "",
-    role: "seeker",
+    role: "user",
   });
 
   const [isUpdating, setIsUpdating] = useState(false);
@@ -86,7 +86,7 @@ export function UsersListTable({ users }: { users: UserData[] }) {
         isOpen: false,
         userId: "",
         userName: "",
-        role: "seeker",
+        role: "user",
       });
     } catch (error) {
       console.error(error);
@@ -191,11 +191,11 @@ export function UsersListTable({ users }: { users: UserData[] }) {
                             isOpen: true,
                             userId: user.id,
                             userName: user.name,
-                            role: "seeker",
+                            role: "user",
                           })
                         }
                       >
-                        Make Seeker
+                        Make User
                       </Button>
 
                       <Button
@@ -206,11 +206,11 @@ export function UsersListTable({ users }: { users: UserData[] }) {
                             isOpen: true,
                             userId: user.id,
                             userName: user.name,
-                            role: "recruiter",
+                            role: "admin",
                           })
                         }
                       >
-                        Make Recruiter
+                        Make Admin
                       </Button>
 
                       {user?.banned ? (

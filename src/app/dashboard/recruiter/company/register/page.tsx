@@ -102,6 +102,8 @@ export default function CompanyRegisterPage() {
       companyLogo: uploadedImageUrl,
       recruiterId: user?.id,
       recruiterEmail: user?.email,
+      createdAt: new Date().toISOString(),
+      jobCount: 0,
     };
     // 2. Perform your actual save API logic here with all form data + uploadedImageUrl
     // console.log("Saving company details...", payload);
